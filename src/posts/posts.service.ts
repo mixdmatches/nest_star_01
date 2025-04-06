@@ -40,7 +40,7 @@ export class PostsService {
       pageNum = 1,
       pageSize = 10,
       ...params
-    } = query as Record<string, any>;
+    } = query as Record<string, number>;
     qb.limit(pageSize);
     qb.offset(pageSize * (pageNum - 1));
     console.log(params);
@@ -58,8 +58,8 @@ export class PostsService {
   }
 
   // 更新文章
-  async updateById(id, post): Promise<PostsEntity> {
-    const existPost = await this.postsRepository.findOne(id);
+  async updateById(id: number, post: PostsEntity): Promise<PostsEntity> {
+    const existPost = await this.postsRepository.findOne({ where: { id } });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 401);
     }
@@ -68,8 +68,8 @@ export class PostsService {
   }
 
   // 刪除文章
-  async remove(id) {
-    const existPost = await this.postsRepository.findOne(id);
+  async remove(id: number) {
+    const existPost = await this.postsRepository.findOne({ where: { id } });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 401);
     }
