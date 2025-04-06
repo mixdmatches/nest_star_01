@@ -1,6 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PostsEntity } from './posts.entity';
 
 export interface PostsRo {
@@ -30,7 +30,10 @@ export class PostsService {
   // 获取文章列表
   async findAll(query): Promise<PostsRo> {
     // 移除不必要的await，因为createQueryBuilder方法返回的不是Promise
-    const qb = getRepository(PostsEntity).createQueryBuilder('post');
+    // 旧版本api用法
+    // const qb = getRepository(PostsEntity).createQueryBuilder('post');
+    // 新版本api用法
+    const qb = this.postsRepository.createQueryBuilder('post');
     qb.where('1 = 1');
     qb.orderBy('post.create_time', 'DESC');
 

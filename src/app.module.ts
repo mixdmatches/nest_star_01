@@ -1,14 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
-// 导入 TypeOrmModule
 import { TypeOrmModule } from '@nestjs/typeorm';
-// 导入 ConfigModule 和 ConfigService
 import { ConfigService, ConfigModule } from '@nestjs/config';
-// 导入 envConfig
 import envConfig from '../config/env';
 import { PostsEntity } from './posts/posts.entity';
+import { Connection } from 'typeorm';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,14 +19,13 @@ import { PostsEntity } from './posts/posts.entity';
       useFactory: (configService: ConfigService) => ({
         type: 'mysql', // 数据库类型
         entities: [PostsEntity], // 数据表实体
-        // 显式指定返回值类型为 string，避免不安全赋值
         host: configService.get<string>('DB_HOST', 'localhost'), // 主机，默认为localhost
         port: configService.get<number>('DB_PORT', 3306), // 端口号
         username: configService.get('DB_USER', 'root'), // 用户名
         password: configService.get('DB_PASSWORD', '230203'), // 密码
-        database: configService.get('DB_DATABASE', 'blog'), //数据库名
-        timezone: '+08:00', //服务器上配置的时区
-        synchronize: true, //根据实体自动创建数据库表， 生产环境建议关闭
+        database: configService.get('DB_DATABASE', 'blog'), // 数据库名
+        timezone: '+08:00', // 服务器上配置的时区
+        synchronize: true, // 根据实体自动创建数据库表， 生产环境建议关闭
       }),
     }),
     PostsModule,
@@ -36,4 +33,15 @@ import { PostsEntity } from './posts/posts.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(private readonly connection: Connection) {}
+
+  async onModuleInit() {
+    try {
+      await this.connection.connect();
+      console.log('Database connection established successfully');
+    } catch (error) {
+      console.error('Database connection failed:', error);
+    }
+  }
+}
