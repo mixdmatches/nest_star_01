@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 // 导入 envConfig
 import envConfig from '../config/env';
+import { PostsEntity } from './posts/posts.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,7 +20,7 @@ import envConfig from '../config/env';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql', // 数据库类型
-        entities: [], // 数据表实体
+        entities: [PostsEntity], // 数据表实体
         // 显式指定返回值类型为 string，避免不安全赋值
         host: configService.get<string>('DB_HOST', 'localhost'), // 主机，默认为localhost
         port: configService.get<number>('DB_PORT', 3306), // 端口号
