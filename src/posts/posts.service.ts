@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostsEntity } from './posts.entity';
-
+import { CreatePostDto } from './dto/create-post.dot';
 export interface PostsRo {
   list: PostsEntity[];
   count: number;
@@ -15,8 +15,10 @@ export class PostsService {
   ) {}
 
   // 创建文章
-  async create(post: Partial<PostsEntity>): Promise<PostsEntity> {
+  async create(post: CreatePostDto): Promise<PostsEntity> {
     const { title } = post;
+    console.log(post);
+
     if (!title) {
       throw new HttpException('缺少文章标题', 401);
     }
@@ -29,7 +31,6 @@ export class PostsService {
 
   // 获取文章列表
   async findAll(query): Promise<PostsRo> {
-    // 移除不必要的await，因为createQueryBuilder方法返回的不是Promise
     // 旧版本api用法
     // const qb = getRepository(PostsEntity).createQueryBuilder('post');
     // 新版本api用法
@@ -61,7 +62,7 @@ export class PostsService {
   }
 
   // 更新文章
-  async updateById(id: number, post: PostsEntity): Promise<PostsEntity> {
+  async updateById(id: number, post: CreatePostDto): Promise<PostsEntity> {
     const existPost = await this.postsRepository.findOne({ where: { id } });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, 401);
