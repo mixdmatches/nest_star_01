@@ -1,6 +1,6 @@
 // dto/create-post.dot.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 export class CreatePostDto {
   @IsNotEmpty({ message: '文章标题不能为空' })
   @ApiProperty({ description: '文章标题' })
@@ -17,7 +17,6 @@ export class CreatePostDto {
   @ApiProperty({ description: '文章封面' })
   readonly cover_url: string;
 
-  @IsNumber()
   @ApiProperty({ description: '文章类型' })
   readonly type: number;
 }

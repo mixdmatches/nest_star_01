@@ -17,15 +17,20 @@ export class PostsService {
   // 创建文章
   async create(post: CreatePostDto): Promise<PostsEntity> {
     const { title } = post;
-    console.log(post);
-
+    console.log(1);
     if (!title) {
       throw new HttpException('缺少文章标题', 401);
     }
+    console.log(2);
+
     const doc = await this.postsRepository.findOne({ where: { title } });
+    console.log(3);
+
     if (doc) {
+      console.log(4);
       throw new HttpException('文章已存在', 401);
     }
+
     return await this.postsRepository.save(post);
   }
 

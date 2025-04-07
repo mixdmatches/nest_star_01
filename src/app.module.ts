@@ -1,12 +1,9 @@
-import { Module, OnModuleInit } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common';
 import { PostsModule } from './posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import envConfig from '../config/env';
 import { PostsEntity } from './posts/posts.entity';
-import { Connection } from 'typeorm';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,18 +27,7 @@ import { Connection } from 'typeorm';
     }),
     PostsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
-export class AppModule implements OnModuleInit {
-  constructor(private readonly connection: Connection) {}
-
-  async onModuleInit() {
-    try {
-      await this.connection.connect();
-      console.log('Database connection established successfully');
-    } catch (error) {
-      console.error('Database connection failed:', error);
-    }
-  }
-}
+export class AppModule {}
