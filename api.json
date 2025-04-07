@@ -1,0 +1,172 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/post": {
+      "post": {
+        "operationId": "PostsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "创建文章",
+        "tags": [
+          "文章管理"
+        ]
+      },
+      "get": {
+        "operationId": "PostsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "获取所有文章",
+        "tags": [
+          "文章管理"
+        ]
+      }
+    },
+    "/api/post/{id}": {
+      "get": {
+        "operationId": "PostsController_findById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "获取指定文章",
+        "tags": [
+          "文章管理"
+        ]
+      },
+      "put": {
+        "operationId": "PostsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "更新文章",
+        "tags": [
+          "文章管理"
+        ]
+      },
+      "delete": {
+        "operationId": "PostsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "删除文章",
+        "tags": [
+          "文章管理"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "文章管理后台",
+    "description": "管理后台接口文档",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreatePostDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "文章标题"
+          },
+          "author": {
+            "type": "string",
+            "description": "文章作者"
+          },
+          "content": {
+            "type": "string",
+            "description": "文章内容"
+          },
+          "cover_url": {
+            "type": "string",
+            "description": "文章封面"
+          },
+          "type": {
+            "type": "number",
+            "description": "文章类型"
+          }
+        },
+        "required": [
+          "title",
+          "author",
+          "content",
+          "cover_url",
+          "type"
+        ]
+      }
+    }
+  }
+}
