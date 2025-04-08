@@ -152,6 +152,36 @@
         ]
       }
     },
+    "/api/users": {
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users",
+          "获取所有用户信息"
+        ]
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "operationId": "UsersController_getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users",
+          "获取当前用户信息"
+        ]
+      }
+    },
     "/api/auth/login": {
       "post": {
         "operationId": "AuthController_login",

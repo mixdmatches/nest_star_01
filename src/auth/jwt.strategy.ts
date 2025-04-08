@@ -6,11 +6,14 @@ import { Strategy, ExtractJwt, StrategyOptionsWithRequest } from 'passport-jwt';
 import { UsersEntity } from 'src/users/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from './auth.service';
+import { Repository } from 'typeorm';
 export class JwtStorage extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(UsersEntity)
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
+    @InjectRepository(UsersEntity)
+    private readonly userRepository: Repository<UsersEntity>,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -18,11 +21,13 @@ export class JwtStorage extends PassportStrategy(Strategy) {
     } as StrategyOptionsWithRequest);
   }
 
-  validate(user: UsersEntity) {
-    const existUser = this.authService.login(user);
-    if (!existUser) {
-      throw new UnauthorizedException('token不正确');
+  async validate(payload: { id: number }) {
+    const exsitUser = await this.userRepository.findOne({
+      where: { id: payload.id },
+    });
+    if (!exsitUser) {
+      throw new UnauthorizedException('用户不存在');
     }
-    return existUser;
+    return exsitUser;
   }
 }

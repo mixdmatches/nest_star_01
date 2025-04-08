@@ -7,7 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStorage } from './local.strategy';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-
+import { jwtConstants } from './constants';
 // const jwtModule = JwtModule.register({
 //   secret: 'test123456',
 //   signOptions: { expiresIn: '4h' },
@@ -15,9 +15,10 @@ import { JwtModule } from '@nestjs/jwt';
 
 const jwtModule = JwtModule.registerAsync({
   inject: [ConfigService],
-  useFactory: (configService: ConfigService) => {
+  useFactory: () => {
     return {
-      secret: configService.get('SECRET', 'test123456'),
+      global: true,
+      secret: jwtConstants.secret,
       signOptions: { expiresIn: '4h' },
     };
   },
@@ -26,6 +27,6 @@ const jwtModule = JwtModule.registerAsync({
   imports: [TypeOrmModule.forFeature([UsersEntity]), PassportModule, jwtModule],
   controllers: [AuthController],
   providers: [AuthService, LocalStorage],
-  exports: [jwtModule], // 导出jwt模块
+  exports: [jwtModule, AuthService], // 导出jwt模块
 })
 export class AuthModule {}

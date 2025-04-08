@@ -12,8 +12,8 @@ export class UsersEntity {
   @Column({ length: 100, default: 'default_nickname' })
   nickname: string; //昵称
 
-  @Exclude() // 排除密码字段
   @Column()
+  @Exclude() // 排除密码字段
   password: string; // 密码
 
   @Column({
