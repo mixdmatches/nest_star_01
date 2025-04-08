@@ -5,12 +5,10 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt, StrategyOptionsWithRequest } from 'passport-jwt';
 import { UsersEntity } from 'src/users/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { AuthService } from './auth.service';
 export class JwtStorage extends PassportStrategy(Strategy) {
   constructor(
     @InjectRepository(UsersEntity)
-    private readonly userRepository: Repository<UsersEntity>,
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
   ) {

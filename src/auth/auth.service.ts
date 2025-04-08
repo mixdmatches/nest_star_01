@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersEntity } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
+    @InjectRepository(UsersEntity)
     private readonly userRepository: Repository<UsersEntity>,
   ) {}
 
@@ -22,16 +24,5 @@ export class AuthService {
     });
 
     return { token };
-  }
-
-  // 获取用户信息
-  async getUser(user: UsersEntity) {
-    if (!user) {
-      return null;
-    }
-    const userInfo = await this.userRepository.findOne({
-      where: { id: user.id },
-    });
-    return userInfo;
   }
 }
