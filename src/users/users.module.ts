@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from '../auth/auth.guard';
 import { ConfigService } from '@nestjs/config';
 import { jwtConstants } from '../auth/constants';
+import { APP_GUARD } from '@nestjs/core';
 const jwtModule = JwtModule.registerAsync({
   inject: [ConfigService],
   useFactory: () => {
@@ -20,6 +21,13 @@ const jwtModule = JwtModule.registerAsync({
 @Module({
   imports: [TypeOrmModule.forFeature([UsersEntity]), jwtModule],
   controllers: [UsersController],
-  providers: [UserService, AuthGuard],
+  providers: [
+    UserService,
+    AuthGuard,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class UsersModule {}

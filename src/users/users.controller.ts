@@ -13,6 +13,7 @@ import { UserService } from './users.service';
 import { CreateUserDto } from './dto/create-users.dot';
 import { UsersEntity } from 'src/users/users.entity';
 import { AuthGuard } from '../auth/auth.guard';
+import { Public } from 'src/common/decorators/public.decorators';
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
@@ -26,6 +27,7 @@ export class UsersController {
   }
 
   @ApiTags('获取所有用户信息')
+  @Public()
   @Get()
   findAll() {
     return this.userService.findAll();
